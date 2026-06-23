@@ -1,0 +1,1 @@
+-keep class coom.boostup.app.** { *; }
