@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BoostUp</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        input, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
+        body {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 2px;
+        }
+
+        .logout-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .logout-modal-box {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logout-modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+<header class="bg-white fixed top-0 left-0 right-0 z-50 shadow-[0_2px_6px_rgba(0,0,0,0.25)]">
+    <div class="flex items-center justify-between px-4 py-3">
+        <button id="menuButton" class="text-xl text-gray-800 active:scale-90 transition">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <h1 class="text-lg font-semibold text-blue-600 truncate">
+            BoostUp        </h1>
+
+        <a href="profile.php" class="text-xl text-gray-800">
+            <i class="fas fa-user-circle"></i>
+        </a>
+    </div>
+</header>
+
+<div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden opacity-0 transition-opacity duration-300"></div>
+<div id="sidebar" 
+    class="fixed top-0 left-0 h-full w-72 
+           bg-white shadow-2xl 
+           transform -translate-x-full 
+           transition-transform duration-300 
+           z-[99999] overflow-y-auto rounded-r-2xl">
+
+    <div class="px-5 py-4 border-b bg-white shadow-sm">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-800 truncate max-w-[180px]">
+                BoostUp            </h2>
+            <button id="closeSidebarBtn" class="text-gray-600 hover:text-red-500">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    
+    <nav class="py-4 px-3">
+        <ul class="space-y-1 text-sm">
+
+            <li class="text-xs uppercase text-gray-400 font-semibold px-3">Main</li>
+
+            <li>
+                <a href="index.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-home w-6 text-blue-600"></i>
+                    <span class="ml-3">Home</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="course.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-book w-6 text-indigo-600"></i>
+                    <span class="ml-3">All Courses</span>
+                </a>
+            </li>
+
+            
+            <li class="text-xs uppercase text-gray-400 font-semibold px-3 mt-4">More</li>
+
+            <li>
+                <a href="social.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fab fa-instagram w-6 text-pink-600"></i>
+                    <span class="ml-3">Social</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="about.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-info-circle w-6 text-blue-500"></i>
+                    <span class="ml-3">About Us</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="contact.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-headset w-6 text-green-600"></i>
+                    <span class="ml-3">Contact Us</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="privacy.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-shield-alt w-6 text-gray-600"></i>
+                    <span class="ml-3">Privacy Policy</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="terms.php" class="sidebar-link flex items-center p-3 rounded-lg hover:bg-blue-50">
+                    <i class="fas fa-file-contract w-6 text-gray-600"></i>
+                    <span class="ml-3">Terms & Conditions</span>
+                </a>
+            </li>
+
+            <li class="text-xs uppercase text-gray-400 font-semibold px-3 mt-4">Account</li>
+
+                        <li>
+                <a href="login.php" class="sidebar-link flex items-center p-3 rounded-lg text-blue-600 hover:bg-blue-50">
+                    <i class="fas fa-sign-in-alt w-6"></i>
+                    <span class="ml-3">Login</span>
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+
+</div>
+
+
+<script>
+(function() {
+    const menuButton = document.getElementById('menuButton');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+    function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+        setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('opacity-0');
+        setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+    }
+
+    menuButton.addEventListener('click', openSidebar);
+    closeSidebarBtn.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+})();
+</script>
+
+
+<main class="pt-16 pb-16"><!-- Sidebar -->
+<div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white border-r transform -translate-x-full transition-transform duration-300 z-50 shadow-lg">
+    <div class="p-4 border-b bg-gray-50">
+        <div class="flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-800">BoostUp</h2>
+            <button onclick="toggleSidebar()" class="text-gray-500 hover:text-red-500">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+            </div>
+
+    <nav class="p-4">
+        <ul class="space-y-1 text-sm">
+            <li>
+                <a href="index.php" class="flex items-center p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">
+                    <i class="fas fa-home w-5 text-purple-600"></i>
+                    <span class="ml-3 font-medium">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="course.php" class="flex items-center p-3 rounded-lg text-gray-800 hover:bg-gray-100 transition">
+                    <i class="fas fa-book w-5 text-teal-600"></i>
+                    <span class="ml-3 font-medium">All Courses</span>
+                </a>
+            </li>
+                        <li>
+                <a href="login.php" class="flex items-center p-3 rounded-lg text-blue-600 hover:bg-blue-50 transition">
+                    <i class="fas fa-sign-in-alt w-5"></i>
+                    <span class="ml-3 font-medium">Login</span>
+                </a>
+            </li>
+                    </ul>
+    </nav>
+</div>  
+  
+<!-- Top Bar: Search + Sort -->  
+<div class="p-4 bg-white border-b flex justify-between items-center gap-2">  
+  <!-- Search Bar -->  
+  <form method="GET" class="flex flex-1 gap-2">
+        <input type="text" name="search" value="" placeholder="Search courses..."  
+           class="flex-1 px-4 py-2 text-sm bg-gray-100 border border-gray-300 rounded-full focus:outline-none" />  
+    <button type="submit" class="hidden"></button>  
+  </form>  
+  
+  <!-- Sort Button -->  
+  <button onclick="toggleSortModal()" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white rounded shadow-[0_2px_5px_rgba(0,0,0,0.1)]">  
+    <i class="fas fa-sort-amount-down-alt mr-2 text-sky-600"></i>  
+    Sort  
+  </button>  
+</div>  
+  
+<!-- Course Grid -->  
+<div class="p-4">  
+    
+    <div class="grid grid-cols-2 gap-4">  
+        
+        <a href="course_detail.php?id=46" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1773313572_WhatsAppImage2026-03-12at4.32.26PM.jpeg"   
+                 alt="Now about boostup app"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Now about boostup app</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹1</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹2</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=45" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1772875379_deto.png"   
+                 alt="Adobe Illustrator Course for Beginners"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Adobe Illustrator Course for Beginners</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹9,999</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹19,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=44" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1772871886_Gemini_Generated_Image_jka9kjka9kjka9kj1.png"   
+                 alt="The Complete Dart &amp; Flutter Developer Course"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">The Complete Dart &amp; Flutter Developer Course</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹9,999</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹19,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=43" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1772830505_WhatsAppImage2026-03-07at2.24.36AM.jpeg"   
+                 alt="Ultimate Ethical Hacking Full Course 2026 in Hindi"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Ultimate Ethical Hacking Full Course 2026 in Hindi</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹9,999</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹19,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=40" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1773312463_diamond.jpeg"   
+                 alt="Diamond package"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Diamond package</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹4,999</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹9,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=39" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1773312446_gold.jpeg"   
+                 alt="Gold package"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                50% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Gold package</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹3,499</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹6,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=38" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1773312420_sliver.jpeg"   
+                 alt="Sliver package"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                44% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Sliver package</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹2,499</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹4,499</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+        <a href="course_detail.php?id=37" class="bg-white rounded-lg shadow-[0_2px_6px_rgba(0,0,0,0.1)] overflow-hidden">  
+          <div class="relative aspect-video">  
+            <img src="uploads/courses/1773312398_bronze.jpeg"   
+                 alt="Bronze package"   
+                 class="w-full h-full object-cover" />  
+              
+              <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs">  
+                67% OFF  
+              </div>  
+              
+          </div>  
+          <div class="p-3">  
+            <h3 class="font-semibold text-gray-800 text-sm mb-2 line-clamp-2">Bronze package</h3>  
+            <div class="flex items-center justify-between">  
+              <div class="flex items-center space-x-2">  
+                <span class="text-sky-600 font-bold">₹999</span>  
+                  
+                  <span class="text-gray-400 line-through text-sm">₹2,999</span>  
+                  
+              </div>  
+            </div>  
+          </div>  
+        </a>  
+        
+    </div>  
+    
+</div>  
+  
+<!-- Sort Modal -->  
+<div id="sortModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-40 flex items-end justify-center">  
+  <div class="bg-white w-full max-w-md rounded-t-2xl shadow-[0_-4px_12px_rgba(0,0,0,0.2)] p-5">  
+    <div class="text-center font-semibold text-lg mb-4 text-gray-800">Sort Courses</div>  
+    <form method="GET" action="">  
+      <input type="hidden" name="category" value="">  
+      <input type="hidden" name="search" value="">  
+      <div class="space-y-3 text-sm text-gray-700">  
+        <label class="flex items-center justify-between cursor-pointer">  
+          <span>Latest</span>  
+          <input type="radio" name="sort" value="latest" checked class="form-radio text-sky-600">  
+        </label>  
+        <label class="flex items-center justify-between cursor-pointer">  
+          <span>Price: Low to High</span>  
+          <input type="radio" name="sort" value="price_low"  class="form-radio text-sky-600">  
+        </label>  
+        <label class="flex items-center justify-between cursor-pointer">  
+          <span>Price: High to Low</span>  
+          <input type="radio" name="sort" value="price_high"  class="form-radio text-sky-600">  
+        </label>  
+      </div>  
+      <div class="mt-6 flex justify-between space-x-4">  
+        <button type="button" onclick="toggleSortModal()" class="w-full py-2 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg">  
+          Cancel  
+        </button>  
+        <button type="submit" class="w-full py-2 text-sm font-medium text-white bg-sky-600 rounded-lg">  
+          Apply  
+        </button>  
+      </div>  
+    </form>  
+  </div>  
+</div>  
+  
+<script>  
+function toggleSortModal() {  
+  document.getElementById('sortModal').classList.toggle('hidden');  
+}
+</script>  
+  
+</main>
+
+
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white z-40 shadow-[0_-2px_6px_rgba(0,0,0,0.2)]">
+  <div class="flex justify-around py-2">
+    
+    <!-- Home -->
+    <a href="index.php" class="flex flex-col items-center text-gray-700">
+      <i class="fas fa-home text-xl mb-1"></i>
+      <span class="text-xs font-medium">Home</span>
+    </a>
+
+    <!-- Courses -->
+    <a href="mycourses.php" class="flex flex-col items-center text-gray-700">
+      <i class="fas fa-graduation-cap text-xl mb-1"></i>
+      <span class="text-xs font-medium">Courses</span>
+    </a>
+
+    <!-- Help -->
+    <a href="help.php" class="flex flex-col items-center text-gray-700">
+      <i class="fas fa-question-circle text-xl mb-1"></i>
+      <span class="text-xs font-medium">Help</span>
+    </a>
+
+    <!-- Profile -->
+    <a href="profile.php" class="flex flex-col items-center text-gray-700">
+      <i class="fas fa-user text-xl mb-1"></i>
+      <span class="text-xs font-medium">Profile</span>
+    </a>
+
+  </div>
+</nav>    
+<script>
+// Disable right-click
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// Disable F12, Ctrl+Shift+I, Ctrl+U
+document.addEventListener("keydown", e => {
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "i") ||
+        (e.ctrlKey && e.key.toLowerCase() === "u")
+    ) e.preventDefault();
+});
+
+const sidebar        = document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebarOverlay");
+const menuButton     = document.getElementById("menuButton");
+const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+const links = document.querySelectorAll(".sidebar-link");
+
+function openSidebar() {
+    sidebar.classList.remove("-translate-x-full");
+    sidebarOverlay.classList.remove("hidden");
+    requestAnimationFrame(() => sidebarOverlay.classList.add("opacity-100"));
+}
+
+function closeSidebar() {
+    sidebar.classList.add("-translate-x-full");
+    sidebarOverlay.classList.remove("opacity-100");
+    setTimeout(() => sidebarOverlay.classList.add("hidden"), 300);
+}
+
+menuButton.onclick = openSidebar;
+closeSidebarBtn.onclick = closeSidebar;
+sidebarOverlay.onclick = closeSidebar;
+links.forEach(link => link.onclick = closeSidebar);
+</script>
+
+</body>
+</html>
